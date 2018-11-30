@@ -54,6 +54,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBOutlet weak var mySceneView: ARSCNView!
     @IBOutlet weak var rightRedArrow: UIImageView!
     @IBOutlet weak var leftRedArrow: UIImageView!
+    @IBOutlet weak var targetInfoLabel: UILabel!
+    @IBOutlet weak var timerLabel: UILabel!
+    @IBOutlet weak var weaponLabel: UILabel!
     
     //enter target buttons
     @IBOutlet weak var directionDistanceInputLabel: UILabel!
@@ -64,9 +67,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     @IBOutlet weak var elevationLabel: UILabel!
     @IBOutlet weak var actualElevationLabel: UILabel!
     @IBOutlet weak var targetEnterButton: UIButton!
+    @IBOutlet weak var degreeSymbolLabel: UILabel!
+    
     //enter target inputs
     @IBOutlet weak var directionInput: UITextField!
     @IBOutlet weak var distanceInput: UITextField!
+    @IBOutlet weak var latInput: UITextField!
+    @IBOutlet weak var longInput: UITextField!
     
     // main buttons
     @IBOutlet weak var enterTargetButton: UIButton!
@@ -103,7 +110,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             }
         } else {
             //print("######################")
-            menuButton.setTitle("Run Demo", for: .normal)
+            menuButton.setTitle("Menu", for: .normal)
             enterTargetButton.isHidden = true
             selectWeaponButton.isHidden = true
             setTimeButton.isHidden = true
@@ -129,6 +136,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             thirtySecondsBtn.isHidden = true
             setTimeEnter.isHidden = true
             runDemoBtn.isHidden = true
+            degreeSymbolLabel.isHidden = true
+            latInput.isHidden = true
+            longInput.isHidden = true
         }
     }
     
@@ -144,6 +154,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             directionInput.isHidden = false
             distanceInput.isHidden = false
             meterLabel.isHidden = false
+            //degreeSymbolLabel.isHidden = false
+            //latInput.isHidden = false∫
+            //longInput.isHidden = false
             // hide other buttons
             strafe20mmBtn.isHidden = true
             strafe30mmBtn.isHidden = true
@@ -168,20 +181,45 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             directionInput.isHidden = true
             distanceInput.isHidden = true
             meterLabel.isHidden = true
+            degreeSymbolLabel.isHidden = true
+            latInput.isHidden = true
+            longInput.isHidden = true
         }
     }
     
     @IBAction func targetEnterBtnPressed(_ sender: UIButton) {
-//        print("Current lat: \(locationManager.location?.coordinate.latitude)")
-//        print("Current long: \(locationManager.location?.coordinate.longitude)")
-//
+        //print("Current lat: \(locationManager.location?.coordinate.latitude)")
+        //print("Current long: \(locationManager.location?.coordinate.longitude)")
+
         if let degrees = Float(directionInput.text!) {
             self.bearing = GLKMathDegreesToRadians(degrees)
         }
         if let distance = Float(distanceInput.text!) {
             distanceAway = distance
         }
+//        } else {
+//            let myLatRads = GLKMathDegreesToRadians(Float(locationManager.location!.coordinate.latitude))
+////            let myLongRads = GLKMathDegreesToRadians(Float(locationManager.location!.coordinate.longitude))
+//
+//            if let nodeLat = Float(latInput.text!) {
+//                let nodeLatRads = GLKMathDegreesToRadians(nodeLat)
+//                if Float(longInput.text!) != nil {
+//                    print(Float(longInput.text!))
+////                    let nodeLongRads = GLKMathDegreesToRadians(nodeLong)
+//                    let x = Float(locationManager.location!.coordinate.longitude) - Float(longInput.text!)!
+//                    var dist = sin(myLatRads) * sin(nodeLatRads) + cos(myLatRads) * cos(nodeLatRads) * cos(GLKMathDegreesToRadians(x))
+//                    print(dist)
+//                    dist = acos(dist)
+//                    dist = GLKMathRadiansToDegrees(dist)
+//                    dist = dist * 60 * 1.1515
+//                    dist = dist * 1.609344 * 1000
+//                    distanceAway = dist
+//                    print("distance away: \(distanceAway)")
+//                }
+//            }
         if bearing != nil && distanceAway != nil {
+            targetInfoLabel.text = "TARGET: DIRECTION: \(Int(GLKMathRadiansToDegrees(bearing!)))° DISTANCE: \(Int(distanceAway!))m ELEVATION: \(Int((locationManager.location?.altitude)! * 3.2808399))'"
+            targetInfoLabel.isHidden = false
             enterTargetButton.layer.borderWidth = 2
             enterTargetButton.layer.borderColor = UIColor.green.cgColor
             
@@ -197,6 +235,11 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             distanceInput.isHidden = true
             distanceInput.text = ""
             meterLabel.isHidden = true
+            degreeSymbolLabel.isHidden = true
+            latInput.isHidden = true
+            latInput.text = ""
+            longInput.isHidden = true
+            longInput.text = ""
             if setTimeButton.layer.borderColor == UIColor.green.cgColor && selectWeaponButton.layer.borderColor == UIColor.green.cgColor {
                 runDemoBtn.isHidden = false
             }
@@ -237,6 +280,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             directionInput.isHidden = true
             distanceInput.isHidden = true
             meterLabel.isHidden = true
+            degreeSymbolLabel.isHidden = true
+            latInput.isHidden = true
+            longInput.isHidden = true
         } else {
             strafe20mmBtn.isHidden = true
             strafe30mmBtn.isHidden = true
@@ -251,10 +297,13 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         unguidedBombBtn.layer.borderWidth = 2
         unguidedBombBtn.layer.borderColor = UIColor.darkGray.cgColor
         unguidedBombBtn.titleLabel?.font = UIFont.boldSystemFont(ofSize: 18)
+        weaponChoice = 3
     }
     
+    var weaponChoice = 0
+    
     @IBAction func weaponEnterBtnPressed(_ sender: UIButton) {
-        if unguidedBombBtn.layer.borderColor == UIColor.darkGray.cgColor {
+        if unguidedBombBtn.layer.borderColor == UIColor.darkGray.cgColor || weaponChoice != 0 {
             selectWeaponButton.layer.borderWidth = 2
             selectWeaponButton.layer.borderColor = UIColor.green.cgColor
             
@@ -294,6 +343,9 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
             directionInput.isHidden = true
             distanceInput.isHidden = true
             meterLabel.isHidden = true
+            degreeSymbolLabel.isHidden = true
+            latInput.isHidden = true
+            longInput.isHidden = true
         } else {
             timeOnBtn.isHidden = true
             timeToBtn.isHidden = true
@@ -349,9 +401,14 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     @IBAction func runDemoBtnPressed(_ sender: UIButton) {
         addScene(angleClockwiseFromNorthInRadians: bearing ?? 0.0, distanceInMeters: distanceAway ?? 0.0)
+        weaponLabel.isHidden = false
+        timerLabel.text = "TTT: \(Int(timeDelay)) sec"
+        timerLabel.isHidden = false
+        countDown()
         
         // hide everything
-        menuButton.setTitle("Run Demo", for: .normal)
+        
+        menuButton.setTitle("Menu", for: .normal)
         enterTargetButton.isHidden = true
         selectWeaponButton.isHidden = true
         setTimeButton.isHidden = true
@@ -377,14 +434,17 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
         thirtySecondsBtn.isHidden = true
         setTimeEnter.isHidden = true
         runDemoBtn.isHidden = true
+        degreeSymbolLabel.isHidden = true
+        latInput.isHidden = true
+        longInput.isHidden = true
         
         // reset everything
-        enterTargetButton.layer.borderColor = UIColor.white.cgColor
-        enterTargetButton.layer.borderWidth = 0
-        selectWeaponButton.layer.borderColor = UIColor.white.cgColor
-        selectWeaponButton.layer.borderWidth = 0
-        setTimeButton.layer.borderColor = UIColor.white.cgColor
-        setTimeButton.layer.borderWidth = 0
+        enterTargetButton.layer.borderColor = UIColor.red.cgColor
+        enterTargetButton.layer.borderWidth = 1
+        selectWeaponButton.layer.borderColor = UIColor.red.cgColor
+        selectWeaponButton.layer.borderWidth = 1
+        setTimeButton.layer.borderColor = UIColor.red.cgColor
+        setTimeButton.layer.borderWidth = 1
         tenSecondsBtn.layer.borderColor = UIColor.white.cgColor
         tenSecondsBtn.layer.borderWidth = 0
         tenSecondsBtn.titleLabel?.font = UIFont.systemFont(ofSize: 17.0)
@@ -396,6 +456,7 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setUpMotion()
         //addScene(angleClockwiseFromNorthInRadians: 1.0, distanceInMeters: 3.0)
         directionInput.delegate = self
@@ -405,6 +466,15 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
+        //style button borders
+        menuButton.layer.cornerRadius = 15
+        enterTargetButton.layer.borderColor = UIColor.red.cgColor
+        enterTargetButton.layer.borderWidth = 1
+        selectWeaponButton.layer.borderColor = UIColor.red.cgColor
+        selectWeaponButton.layer.borderWidth = 1
+        setTimeButton.layer.borderColor = UIColor.red.cgColor
+        setTimeButton.layer.borderWidth = 1
 
         directionInput.isHidden = true
         distanceInput.isHidden = true
@@ -436,24 +506,29 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
     
     func addScene(angleClockwiseFromNorthInRadians: Float, distanceInMeters: Float) {
 
-        let plane = SCNPlane(width: 1, height: 1)
+        let plane = SCNPlane(width: 50, height: 50)
         let planeNode = SCNNode()
         planeNode.geometry = plane
-        //planeNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "explosion4")
         planeNode.geometry?.firstMaterial?.diffuse.contents = UIImage(named: "crosshair")
         sceneNode = planeNode
         
         let _ = Timer.scheduledTimer(withTimeInterval: timeDelay, repeats: false) { timer in
             self.explode()
         }
-        
-        let x = distanceInMeters * sin(angleClockwiseFromNorthInRadians)
-        let z = distanceInMeters * -1 * cos(angleClockwiseFromNorthInRadians)
+        let distance: Float
+
+        if distanceInMeters > 1000.0 {
+            distance = 1000.0
+        } else {
+            distance = distanceInMeters
+        }
+        let x = distance * sin(angleClockwiseFromNorthInRadians)
+        let z = distance * -1 * cos(angleClockwiseFromNorthInRadians)
+    
         planeNode.rotation = SCNVector4(x: 0, y: 1, z: 0, w: (angleClockwiseFromNorthInRadians * -1))
         planeNode.position = SCNVector3(x, 0, z)
         let scene = SCNScene()
         scene.rootNode.addChildNode(planeNode)
-        
         
 //        let box = SCNBox(width: 0.05, height: 0.05, length: 0.05, chamferRadius: 0)
 //        let x = distanceInMeters * sin(angleClockwiseFromNorthInRadians)
@@ -474,42 +549,51 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 let vis = self.mySceneView.isNode(self.sceneNode!, insideFrustumOf: pointOfView)
                 
                 if vis == false {
-                    // Arrow Height
                     
+                    // Arrow Rotation & Height
+                    
+                    if self.myRollInRadians < -1.92 {
+                        self.leftRedArrow.transform = CGAffineTransform(translationX: -10, y: 135)
+                        self.leftRedArrow.transform = self.leftRedArrow.transform.rotated(by: -0.7853)
+                        self.rightRedArrow.transform = CGAffineTransform(translationX: 10, y: 135)
+                        self.rightRedArrow.transform = self.rightRedArrow.transform.rotated(by: 0.7853)
+                    } else if self.myRollInRadians > -1.22 {
+                        self.leftRedArrow.transform = CGAffineTransform(translationX: -10, y: -110)
+                        self.leftRedArrow.transform = self.leftRedArrow.transform.rotated(by: 0.7853)
+                        self.rightRedArrow.transform = CGAffineTransform(translationX: 10, y: -110)
+                        self.rightRedArrow.transform = self.rightRedArrow.transform.rotated(by: -0.7853)
+                    } else {
+                        self.leftRedArrow.transform = CGAffineTransform(rotationAngle: 0.0)
+                        self.rightRedArrow.transform = CGAffineTransform(rotationAngle: 0.0)
+                    }
                     
                     
                     // Which Arrow is showing
                     if let nodeBearing = self.bearing {
                         let myBearing = self.myHeadingInRadians!
-                        // print(nodeBearing)
-                        // print(myBearing)
-                        var halfway: Float
-                        if nodeBearing < 3.14159 {
-                            halfway = nodeBearing + 3.14159
-                        } else {
-                            halfway = nodeBearing - 3.14159
-                        }
-                        print("myBearing: \(myBearing)")
-                        print("halfway: \(halfway)")
-                        print("nodeBearing: \(nodeBearing)")
+//                        var halfway: Float
+//                        if nodeBearing < 3.14159 {
+//                            halfway = nodeBearing + 3.14159
+//                        } else {
+//                            halfway = nodeBearing - 3.14159
+//                        }
+//                        print("myBearing: \(myBearing)")
+//                        print("halfway: \(halfway)")
+//                        print("nodeBearing: \(nodeBearing)")
                         
                         if myBearing > nodeBearing {
                             if myBearing - nodeBearing > 3.14159 {
-                                print("1111111111")
                                 self.leftRedArrow.isHidden = true
                                 self.rightRedArrow.isHidden = false
                             } else {
-                                print("22222222222")
                                 self.leftRedArrow.isHidden = false
                                 self.rightRedArrow.isHidden = true
                             }
                         } else {
                             if myBearing + 6.183 - nodeBearing > 3.14159 {
-                                print("333333333333333")
                                 self.leftRedArrow.isHidden = true
                                 self.rightRedArrow.isHidden = false
                             } else {
-                                print("44444444444444")
                                 self.leftRedArrow.isHidden = false
                                 self.rightRedArrow.isHidden = true
                             }
@@ -535,6 +619,27 @@ class ViewController: UIViewController, CLLocationManagerDelegate, UITextFieldDe
                 self.leftRedArrow.isHidden = true
                 self.rightRedArrow.isHidden = true
                 self.times = 1
+                self.weaponLabel.isHidden = true
+                self.timerLabel.isHidden = true
+                self.targetInfoLabel.isHidden = true
+            }
+        }
+    }
+    
+    func countDown(){
+        let _ = Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false) { timer in
+            if self.timeDelay > 1 {
+                self.timeDelay -= 1
+                self.timerLabel.text = "TTT: \(Int(self.timeDelay)) sec"
+                self.countDown()
+            } else {
+                let main_string = "TTT: -- sec"
+                let string_to_color = "--"
+                
+                let range = (main_string as NSString).range(of: string_to_color)
+                let attributedString = NSMutableAttributedString(string:main_string)
+                attributedString.addAttribute(NSAttributedString.Key.foregroundColor, value: UIColor.red , range: range)
+                self.timerLabel.attributedText = attributedString
             }
         }
     }

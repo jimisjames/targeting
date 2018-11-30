@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38170C6521AF082E00AC0FF5 /* OpeningViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 38170C6421AF082E00AC0FF5 /* OpeningViewController.swift */; };
 		3891FE4521A3084B00A736B3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891FE4421A3084B00A736B3 /* AppDelegate.swift */; };
 		3891FE4721A3084B00A736B3 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3891FE4621A3084B00A736B3 /* ViewController.swift */; };
 		3891FE4A21A3084B00A736B3 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3891FE4821A3084B00A736B3 /* Main.storyboard */; };
@@ -35,6 +36,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		38170C6421AF082E00AC0FF5 /* OpeningViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpeningViewController.swift; sourceTree = "<group>"; };
 		3891FE4121A3084A00A736B3 /* targeting.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = targeting.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3891FE4421A3084B00A736B3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		3891FE4621A3084B00A736B3 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,6 +103,7 @@
 			children = (
 				3891FE4421A3084B00A736B3 /* AppDelegate.swift */,
 				3891FE4621A3084B00A736B3 /* ViewController.swift */,
+				38170C6421AF082E00AC0FF5 /* OpeningViewController.swift */,
 				3891FE4821A3084B00A736B3 /* Main.storyboard */,
 				3891FE4E21A3084C00A736B3 /* Assets.xcassets */,
 				3891FE5021A3084C00A736B3 /* LaunchScreen.storyboard */,
@@ -260,6 +263,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3891FE4D21A3084B00A736B3 /* targeting.xcdatamodeld in Sources */,
+				38170C6521AF082E00AC0FF5 /* OpeningViewController.swift in Sources */,
 				3891FE4721A3084B00A736B3 /* ViewController.swift in Sources */,
 				3891FE4521A3084B00A736B3 /* AppDelegate.swift in Sources */,
 			);
@@ -439,6 +443,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3A874C69NA;
 				INFOPLIST_FILE = targeting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -457,6 +462,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 3A874C69NA;
 				INFOPLIST_FILE = targeting/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
